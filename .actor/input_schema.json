@@ -1,0 +1,25 @@
+{
+  "title": "Maigret usernames scan",
+  "type": "object",
+  "properties": {
+    "usernames": {
+      "title": "Usernames",
+      "type": "array",
+      "description": "Liste des noms d’utilisateur à vérifier",
+      "items": { "type": "string" },
+      "editor": "array"
+    },
+    "siteSubset": {
+      "title": "Sous-ensemble de sites (optionnel)",
+      "type": "string",
+      "description": "Ex: \"popular\" ou liste séparée par des virgules"
+    },
+    "timeoutSec": {
+      "title": "Timeout par username (sec)",
+      "type": "integer",
+      "default": 60,
+      "minimum": 1
+    }
+  },
+  "required": ["usernames"]
+}
