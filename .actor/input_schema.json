@@ -1,29 +1,42 @@
 {
   "schemaVersion": 1,
   "title": "Maigret usernames scan",
+  "description": "Analyse OSINT des usernames via Maigret pour détecter des comptes existants sur le web.",
   "type": "object",
   "properties": {
     "usernames": {
-      "title": "Usernames",
+      "title": "Usernames à vérifier",
+      "description": "Liste des noms d'utilisateur à scanner (ex: christophebaviere, cbaviere...).",
       "type": "array",
-      "description": "Liste des noms d’utilisateur à vérifier",
       "editor": "stringList",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "siteSubset": {
-      "title": "Sous-ensemble de sites (optionnel)",
+      "title": "Sous-ensemble de sites à cibler (optionnel)",
+      "description": "Permet de limiter le scan à une liste spécifique (ex: 'popular', 'social', 'dating', etc.).",
       "type": "string",
-      "editor": "textfield",
-      "description": "Ex: popular ou liste séparée par des virgules"
+      "editor": "textfield"
     },
     "timeoutSec": {
-      "title": "Timeout par username (sec)",
+      "title": "Temps maximum par username (en secondes)",
+      "description": "Durée maximale d'analyse pour chaque username avant arrêt du processus.",
       "type": "integer",
       "editor": "number",
       "default": 60,
       "minimum": 1
+    },
+    "outputFormat": {
+      "title": "Format de sortie",
+      "description": "Choix du format de sortie du résultat Maigret.",
+      "type": "string",
+      "editor": "select",
+      "default": "json",
+      "enum": ["json", "text", "csv"]
     }
   },
   "required": ["usernames"]
