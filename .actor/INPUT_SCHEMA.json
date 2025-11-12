@@ -1,0 +1,30 @@
+{
+  "title": "Maigret OSINT Actor Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "username": {
+      "title": "Username to search",
+      "type": "string",
+      "description": "The username you want to search across platforms",
+      "editor": "textfield",
+      "example": "johndoe"
+    },
+    "timeout": {
+      "title": "Timeout (seconds)",
+      "type": "integer",
+      "description": "Timeout for each site check",
+      "default": 30,
+      "minimum": 10,
+      "maximum": 300
+    },
+    "tags": {
+      "title": "Filter by tags",
+      "type": "string",
+      "description": "Filter sites by tags (comma-separated)",
+      "editor": "textfield",
+      "example": "social,coding"
+    }
+  },
+  "required": ["username"]
+}
