@@ -1,5 +1,4 @@
 FROM python:3.12-slim
-
 WORKDIR /app
 
 # 1. Installer dépendances système nécessaires à Maigret et à pycairo/xhtml2pdf
@@ -24,5 +23,8 @@ COPY . .
 RUN YARL_NO_EXTENSIONS=1 python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 RUN YARL_NO_EXTENSIONS=1 python3 -m pip install --no-cache-dir maigret
 
-# 4. Lancer le script principal
+# 4. Installer Apify SDK
+RUN python3 -m pip install --no-cache-dir apify
+
+# 5. Lancer le script principal
 CMD ["python3", "main.py"]
