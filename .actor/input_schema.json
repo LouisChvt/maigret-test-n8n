@@ -7,17 +7,21 @@
       "title": "Usernames",
       "type": "array",
       "description": "Liste des noms d’utilisateur à vérifier",
-      "items": { "type": "string" },
-      "editor": "array"
+      "editor": "stringList",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
     },
     "siteSubset": {
       "title": "Sous-ensemble de sites (optionnel)",
       "type": "string",
-      "description": "Ex: \"popular\" ou liste séparée par des virgules"
+      "editor": "textfield",
+      "description": "Ex: popular ou liste séparée par des virgules"
     },
     "timeoutSec": {
       "title": "Timeout par username (sec)",
       "type": "integer",
+      "editor": "number",
       "default": 60,
       "minimum": 1
     }
