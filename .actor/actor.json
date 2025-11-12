@@ -1,9 +1,15 @@
 {
   "actorSpecification": 1,
-  "name": "Maigret-Test-n8n",
-  "title": "Mon Maigret depuis GitHub",
+  "name": "maigret-test-n8n",
+  "title": "Maigret – Username OSINT (n8n helper)",
   "version": "0.1",
   "buildTag": "latest",
-  "environmentVariables": [],
-  "storages": {}
+
+  "dockerfile": "Dockerfile",
+
+  "environmentVariables": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+
+  "input": ".actor/input_schema.json"
 }
