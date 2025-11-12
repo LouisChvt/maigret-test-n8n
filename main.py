@@ -17,11 +17,14 @@ async def main():
         
         Actor.log.info(f'Starting Maigret search for username: {username}')
         
-        # Construire la commande Maigret
-        cmd = ['maigret', username, '--timeout', str(timeout), '--json', 'ndjson']
+        # Construire la commande Maigret avec sortie JSON
+        cmd = ['maigret', username, '--timeout', str(timeout), '--json', 'simple']
         
         if tags:
             cmd.extend(['--tags', tags])
+        
+        # Log de la commande
+        Actor.log.info(f'Running command: {" ".join(cmd)}')
         
         # Exécuter Maigret
         try:
@@ -29,27 +32,37 @@ async def main():
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=3600  # 1h max
+                timeout=3600
             )
             
-            # Parser les résultats
-            output_lines = result.stdout.strip().split('\n')
+            Actor.log.info(f'Maigret stdout length: {len(result.stdout)}')
+            Actor.log.info(f'Maigret stderr: {result.stderr[:500]}')  # Premiers 500 caractères
             
-            for line in output_lines:
-                if line.strip():
-                    try:
-                        data = json.loads(line)
-                        # Pousser vers le dataset Apify
-                        await Actor.push_data({
-                            'username': username,
-                            'site_name': data.get('site_name'),
-                            'url': data.get('url'),
-                            'status': data.get('status'),
-                            'http_status': data.get('http_status'),
-                            'response_time': data.get('response_time')
-                        })
-                    except json.JSONDecodeError:
-                        continue
+            # Si pas de JSON, essayer de parser la sortie standard
+            if result.stdout.strip():
+                try:
+                    # Essayer de parser comme JSON
+                    data = json.loads(result.stdout)
+                    
+                    # Parcourir les résultats
+                    for site_name, site_data in data.items():
+                        if isinstance(site_data, dict) and site_data.get('status'):
+                            await Actor.push_data({
+                                'username': username,
+                                'site_name': site_name,
+                                'url': site_data.get('url_user', ''),
+                                'status': site_data.get('status', {}).get('status'),
+                                'http_status': site_data.get('status', {}).get('http_status'),
+                                'response_time': site_data.get('status', {}).get('query_time')
+                            })
+                    
+                    Actor.log.info(f'Pushed data for {len(data)} sites')
+                    
+                except json.JSONDecodeError as e:
+                    Actor.log.warning(f'Could not parse JSON: {e}')
+                    Actor.log.info(f'Raw output (first 1000 chars): {result.stdout[:1000]}')
+            else:
+                Actor.log.warning('No stdout from Maigret')
             
             Actor.log.info(f'Search completed for {username}')
             
