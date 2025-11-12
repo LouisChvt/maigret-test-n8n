@@ -1,0 +1,40 @@
+{
+  "title": "Maigret OSINT Search Input",
+  "description": "Search for usernames across 3000+ websites using Maigret",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "usernames": {
+      "title": "Usernames to search",
+      "type": "array",
+      "description": "List of usernames to search across social media and websites",
+      "editor": "stringList",
+      "prefill": ["johndoe"],
+      "minItems": 1
+    },
+    "timeout": {
+      "title": "Timeout per site (seconds)",
+      "type": "integer",
+      "description": "Maximum time to wait for each site response",
+      "default": 30,
+      "minimum": 5,
+      "maximum": 300,
+      "editor": "number"
+    },
+    "tags": {
+      "title": "Filter by tags",
+      "type": "string",
+      "description": "Filter sites by tags (comma-separated). Examples: social, coding, gaming, us, fr",
+      "editor": "textfield",
+      "example": "social,coding"
+    },
+    "allSites": {
+      "title": "Search all sites",
+      "type": "boolean",
+      "description": "Search all 3000+ sites instead of top 500 (slower but more comprehensive)",
+      "default": false,
+      "editor": "checkbox"
+    }
+  },
+  "required": ["usernames"]
+}
