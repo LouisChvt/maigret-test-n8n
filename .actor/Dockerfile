@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 WORKDIR /app
 
-# Installer dépendances système + jq + jo (pour JSON)
+# Installer dépendances système + Node.js
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     jq \
+    nodejs \
+    npm \
  && rm -rf /var/lib/apt/lists/*
 
 # Installer jo (JSON output tool)
