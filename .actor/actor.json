@@ -11,5 +11,5 @@
     "PYTHONDONTWRITEBYTECODE": "1"
   },
 
-  "input": ".actor/input_schema.json"
+  "input": "input_schema.json"
 }
