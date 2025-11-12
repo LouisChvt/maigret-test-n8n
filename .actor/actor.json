@@ -1,12 +1,30 @@
 {
   "actorSpecification": 1,
-  "name": "maigret-test-n8n",
-  "title": "Maigret – Username OSINT (n8n helper)",
-  "version": "0.1.0",
-  "buildTag": "latest",
-  "dockerfile": "../Dockerfile",
-  "environmentVariables": {
-    "PYTHONDONTWRITEBYTECODE": "1"
-  },
-  "input": "input_schema.json"
+  "name": "maigret-osint",
+  "title": "Maigret OSINT Username Search",
+  "description": "Search for usernames across 2000+ websites using Maigret",
+  "version": "1.0.0",
+  "dockerfile": "./Dockerfile",
+  "input": "./INPUT_SCHEMA.json",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Results",
+          "transformation": {
+            "fields": [
+              "username",
+              "site_name",
+              "url",
+              "status"
+            ]
+          },
+          "display": {
+            "component": "table"
+          }
+        }
+      }
+    }
+  }
 }
