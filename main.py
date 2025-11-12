@@ -1,44 +1,52 @@
 import os
 import json
 import asyncio
-from maigret import Maigret
+from maigret.maigret import MaigretDatabase, maigret
+from maigret.result import Result
+from maigret.utils import save_json
 
-# Chemins standards Apify
+# Chemins Apify
 INPUT_PATH = os.getenv("APIFY_INPUT", "/apify_storage/key_value_stores/default/INPUT.json")
-OUTPUT_PATH = "/apify_storage/key_value_stores/default/OUTPUT.json"
+OUTPUT_PATH = "/apify_storage/key_value_stores/default/OUTPUT.json")
 
-async def run_maigret():
+async def main():
     # Lire l'input Apify
     with open(INPUT_PATH, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     usernames = data.get("usernames", [])
     site_subset = data.get("siteSubset")
-    timeout = data.get("timeoutSec", 60)
-    output_format = data.get("outputFormat", "json")
+    timeout = int(data.get("timeoutSec", 60))
 
     if not usernames:
-        raise ValueError("No usernames provided in input.")
+        print("⚠️ Aucun username fourni dans l'input.")
+        return
 
+    # Charger la base des sites Maigret
+    db = MaigretDatabase()
+    await db.load_from_remote()
+
+    # Lancer la recherche
     results = {}
 
-    # Créer l'instance Maigret
-    maigret = Maigret()
-
     for username in usernames:
-        print(f"Scanning username: {username}")
-        try:
-            res = await maigret.search(username, site_subset=site_subset, timeout=timeout)
-            results[username] = res
-        except Exception as e:
-            print(f"Error scanning {username}: {e}")
-            results[username] = {"error": str(e)}
+        print(f"🔎 Recherche Maigret pour: {username}")
+        found = await maigret(
+            username=username,
+            db=db,
+            site_subset=site_subset,
+            timeout=timeout,
+            no_progressbar=True,
+            is_async=True,
+            print_found_only=True
+        )
+        results[username] = found
 
-    # Sauvegarder les résultats
+    # Sauvegarder la sortie Apify
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
-    print("✅ Scan finished. Results saved to OUTPUT.json")
+    print("✅ Résultats enregistrés dans OUTPUT.json")
 
 if __name__ == "__main__":
-    asyncio.run(run_maigret())
+    asyncio.run(main())
