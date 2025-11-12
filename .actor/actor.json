@@ -1,0 +1,9 @@
+{
+  "actorSpecification": 1,
+  "name": "Maigret-Test-n8n",
+  "title": "Mon Maigret depuis GitHub",
+  "version": "0.1",
+  "buildTag": "latest",
+  "environmentVariables": [],
+  "storages": {}
+}
