@@ -2,14 +2,11 @@
   "actorSpecification": 1,
   "name": "maigret-test-n8n",
   "title": "Maigret – Username OSINT (n8n helper)",
-  "version": "0.1",
+  "version": "0.1.0",
   "buildTag": "latest",
-
-  "dockerfile": "Dockerfile",
-
+  "dockerfile": "../Dockerfile",
   "environmentVariables": {
     "PYTHONDONTWRITEBYTECODE": "1"
   },
-
   "input": "input_schema.json"
 }
