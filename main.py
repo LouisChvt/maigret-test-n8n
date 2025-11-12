@@ -7,7 +7,7 @@ from maigret.utils import save_json
 
 # Chemins Apify
 INPUT_PATH = os.getenv("APIFY_INPUT", "/apify_storage/key_value_stores/default/INPUT.json")
-OUTPUT_PATH = "/apify_storage/key_value_stores/default/OUTPUT.json")
+OUTPUT_PATH = "/apify_storage/key_value_stores/default/OUTPUT.json"
 
 async def main():
     # Lire l'input Apify
@@ -31,22 +31,9 @@ async def main():
 
     for username in usernames:
         print(f"🔎 Recherche Maigret pour: {username}")
-        found = await maigret(
-            username=username,
-            db=db,
-            site_subset=site_subset,
-            timeout=timeout,
-            no_progressbar=True,
-            is_async=True,
-            print_found_only=True
-        )
-        results[username] = found
-
-    # Sauvegarder la sortie Apify
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-
-    print("✅ Résultats enregistrés dans OUTPUT.json")
-
-if __name__ == "__main__":
-    asyncio.run(main())
+        try:
+            found = await maigret(
+                username=username,
+                db=db,
+                site_subset=site_subset,
+                timeout=timeout,
