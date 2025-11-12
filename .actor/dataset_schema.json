@@ -1,0 +1,74 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "title": "Maigret search results",
+    "description": "Found profiles from Maigret OSINT search",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+      "username": {
+        "title": "Username",
+        "type": "string",
+        "description": "The searched username"
+      },
+      "site_name": {
+        "title": "Site Name",
+        "type": "string",
+        "description": "Name of the website where profile was found"
+      },
+      "url": {
+        "title": "Profile URL",
+        "type": "string",
+        "description": "Direct link to the user profile"
+      },
+      "status": {
+        "title": "Status",
+        "type": "string",
+        "description": "Status of the profile (Claimed, etc.)"
+      },
+      "http_status": {
+        "title": "HTTP Status",
+        "type": ["integer", "null"],
+        "description": "HTTP response status code"
+      },
+      "response_time": {
+        "title": "Response Time",
+        "type": ["number", "null"],
+        "description": "Response time in seconds"
+      }
+    },
+    "required": ["username", "site_name", "url", "status"]
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": ["username", "site_name", "url", "status", "http_status", "response_time"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "username": {
+            "label": "Username"
+          },
+          "site_name": {
+            "label": "Site"
+          },
+          "url": {
+            "label": "Profile URL",
+            "format": "link"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "http_status": {
+            "label": "HTTP Code"
+          },
+          "response_time": {
+            "label": "Response Time (s)"
+          }
+        }
+      }
+    }
+  }
+}
